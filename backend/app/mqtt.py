@@ -39,7 +39,7 @@ class MQTT:
         self.client.message_callback_add("620152241_sub", self.toggle)
 
         # ADD MQTT SERVER AND PORT INFORMATION BELOW
-        self.client.connect_async("dbs.msjrealtms.com", 1883, 60)
+        self.client.connect_async("www.yanacreations.com", 1883, 60)
        
 
 

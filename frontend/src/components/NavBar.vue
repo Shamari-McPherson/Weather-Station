@@ -12,12 +12,12 @@
                                 <VBtn class="text-subtitle-2"   density="compact"  color="primary" :variant="(route.name == 'Home')? 'tonal':'text'">Home</VBtn>
                             </RouterLink>
                             
-                            <RouterLink class="route" to="/control">
-                                 <VBtn class="text-subtitle-2" density="compact" color="primary" :variant="(route.name == 'Control')? 'tonal':'text'">Control</VBtn>
+                            <RouterLink class="route" to="/convert">
+                                 <VBtn class="text-subtitle-2" density="compact" color="primary" :variant="(route.name == 'Convert')? 'tonal':'text'">Convert</VBtn>
                             </RouterLink>
 
-                            <RouterLink class="route" to="/dashboard" >
-                                <VBtn class="text-subtitle-2"   density="compact"  color="primary" :variant="(route.name == 'Dashboard')? 'tonal':'text'">Dashboard</VBtn>
+                            <RouterLink class="route" to="/live">
+                                <VBtn class="text-subtitle-2" density="compact" color="primary" :variant="(route.name == 'Live')? 'tonal':'text'">Live</VBtn>
                             </RouterLink>
                             
                             <RouterLink class="route" to="/analysis">

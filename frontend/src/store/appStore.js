@@ -1,3 +1,6 @@
+/* The above code is defining a Pinia store named 'app' using the composition API in Vue.js. It
+includes state properties, actions, and methods to fetch data from various API endpoints related to
+weather and environmental data. */
 import {defineStore} from 'pinia'
 import {ref} from 'vue'
 
@@ -18,16 +21,15 @@ export const useAppStore =  defineStore('app', ()=>{
         const controller = new AbortController();
         const signal = controller.signal;
         const id = setTimeout(() => { controller.abort() }, 60000);
-        const URL = `/api/reserve/${start}/${end}`;
+        const URL = `/api/station/get/${start}/${end}`;
         try {
             const response = await fetch(URL, { method: 'GET', signal: signal });
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 let keys = Object.keys(data);
                 if (keys.includes("status")) {
-                    if (data["status"] == "complete") {
-                      //  console.log(data["data"]);
+                    if (data["status"] == "found") {
+                        console.log(data["data"]);
                         return data["data"];
                     }
                     if (data["status"] == "failed"
@@ -43,33 +45,31 @@ export const useAppStore =  defineStore('app', ()=>{
         }
         catch (err) {
   
-            console.error('getAllInRange in appstore error:', err.message);
+            console.error('getAllInRange error:', err.message);
         }
         return []
-    } 
+    }
+  
 
-
-
-
-    const calculate_avg_reserve = async (start, end) => {
+    const getFreqDistro = async (variable, start, end) => {
         // FETCH REQUEST WILL TIMEOUT AFTER 20 SECONDS
         const controller = new AbortController();
         const signal = controller.signal;
         const id = setTimeout(() => { controller.abort() }, 60000);
-        const URL = `/api/avg/${start}/${end}`;
+        const URL = `/api/frequency/${variable}/${start}/${end}`;
         try {
             const response = await fetch(URL, { method: 'GET', signal: signal });
             if (response.ok) {
                 const data = await response.json();
                 let keys = Object.keys(data);
                 if (keys.includes("status")) {
-                    if (data["status"] == "complete") {
+                    if (data["status"] == "found") {
                         console.log(data["data"]);
                         return data["data"];
                     }
                     if (data["status"] == "failed"
                     ) {
-                        console.log("calculate_avg_reserve returned no data");
+                        console.log("getFreqDistro returned no data");
                     }
                 }
             }
@@ -79,38 +79,13 @@ export const useAppStore =  defineStore('app', ()=>{
             }
         }
         catch (err) {
-
-            console.error('getAllInRange error:', err.message);
+            console.error('getFreqDistro error: ', err.message);
         }
         return []
-    }
-    const getCheckCombination= async (data) => {
-        const controller = new AbortController();
-        const signal = controller.signal;
-        const id= setTimeout(() => controller.abort(), 60000);
-        const URL= '/api/check/combination';
-            
-             try {
-                  const response = await fetch(URL, {
-                        method: 'POST',
-                        signal: signal,
-                        headers: {
-                             'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(data)
-                  });
-                  const result = await response.json();
-                  console.log(result);
-                  clearTimeout(id);
-                  return result;
-                 } catch (error) {
-                  console.log(error);
-                  clearTimeout(id);
-                  return {status: 'getCheckCombination error', message: error.message};
-                 }
-                 return [];
+    }   
 
-    }
+    
+    
  
 
    const getUpdateData= async (data) => {
@@ -140,29 +115,25 @@ export const useAppStore =  defineStore('app', ()=>{
             return [];
     }
   
-    const getSetCombination = async (passcode) => {
+    const getTemperatureMMAR = async (start, end) => {
         // FETCH REQUEST WILL TIMEOUT AFTER 20 SECONDS
-        //console.log(passcode);
         const controller = new AbortController();
         const signal = controller.signal;
         const id = setTimeout(() => { controller.abort() }, 60000);
-        const form = new FormData(); // Create form
-        form.append("passcode", passcode); // Add variable to form
-        console.log(form)
-        const URL = `/api/set/combination`;
+        const URL = `/api/mmar/temperature/${start}/${end}`;
         try {
-            const response = await fetch(URL, { method: 'POST', signal: signal,body: form, });
+            const response = await fetch(URL, { method: 'GET', signal: signal });
             if (response.ok) {
                 const data = await response.json();
                 let keys = Object.keys(data);
                 if (keys.includes("status")) {
-                    if (data["status"] == "complete") {
+                    if (data["status"] == "found") {
                         console.log(data["data"]);
                         return data["data"];
                     }
                     if (data["status"] == "failed"
                     ) {
-                        console.log("getSetCombination returned no data");
+                        console.log("getTemperatureMMAR returned no data");
                     }
                 }
             }
@@ -172,48 +143,145 @@ export const useAppStore =  defineStore('app', ()=>{
             }
         }
         catch (err) {
-            console.error('getSetCombination error: ', err.message);
+            console.error('getTemperatureMMAR error: ', err.message);
         }
         return []
     }
   
+  
+  
+    const getHumidityMMAR = async (start, end) => {
+        // FETCH REQUEST WILL TIMEOUT AFTER 20 SECONDS
+        const controller = new AbortController();
+        const signal = controller.signal;
+        const id = setTimeout(() => { controller.abort() }, 60000);
+        const URL = `/api/mmar/humidity/${start}/${end}`;
+        try {
+            const response = await fetch(URL, { method: 'GET', signal: signal });
+            if (response.ok) {
+                const data = await response.json();
+                let keys = Object.keys(data);
+                if (keys.includes("status")) {
+                    if (data["status"] == "found") {
+                        console.log(data["data"]);
+                        return data["data"];
+                    }
+                    if (data["status"] == "failed"
+                    ) {
+                        console.log("getHumidityMMAR returned no data");
+                    }
+                }
+            }
+            else {
+                const data = await response.text();
+                console.log(data);
+            }
+        }
+        catch (err) {
+            console.error('getHumidityMMAR error: ', err.message);
+        }
+        return []
+    }
 
-    // const calculate_avg_reserve = async (start, end) => {
-    //     // FETCH REQUEST WILL TIMEOUT AFTER 20 SECONDS
-    //     const controller = new AbortController();
-    //     const signal = controller.signal;
-    //     const id = setTimeout(() => { controller.abort() }, 60000);
-    //     const URL = `/api/avg/${start}/${end}`;
-    //     try {
-    //         const response = await fetch(URL, { method: 'GET', signal: signal });
-    //         if (response.ok) {
-    //             const data = await response.json();
-    //             let keys = Object.keys(data);
-    //             if (keys.includes("status")) {
-    //                 if (data["status"] == "found") {
-    //                     console.log(data["data"]);
-    //                     return data["data"];
-    //                 }
-    //                 if (data["status"] == "failed"
-    //                 ) {
-    //                     console.log("update_Card returned no data");
-    //                 }
-    //             }
-    //         }
-    //         else {
-    //             const data = await response.text();
-    //             console.log(data);
-    //         }
-    //     }
-    //     catch (err) {
+    const getSoilMMAR = async (start, end) => {
+        // FETCH REQUEST WILL TIMEOUT AFTER 20 SECONDS
+        const controller = new AbortController();
+        const signal = controller.signal;
+        const id = setTimeout(() => { controller.abort() }, 60000);
+        const URL = `/api/mmar/soil/${start}/${end}`;
+        try {
+            const response = await fetch(URL, { method: 'GET', signal: signal });
+            if (response.ok) {
+                const data = await response.json();
+                let keys = Object.keys(data);
+                if (keys.includes("status")) {
+                    if (data["status"] == "found") {
+                        console.log(data["data"]);
+                        return data["data"];
+                    }
+                    if (data["status"] == "failed"
+                    ) {
+                        console.log("getSoilMMAR returned no data");
+                    }
+                }
+            }
+            else {
+                const data = await response.text();
+                console.log(data);
+            }
+        }
+        catch (err) {
+            console.error('getSoilMMAR error: ', err.message);
+        }
+        return []
+    }
+  
+  
+    const getPressureMMAR = async (start, end) => {
+        // FETCH REQUEST WILL TIMEOUT AFTER 20 SECONDS
+        const controller = new AbortController();
+        const signal = controller.signal;
+        const id = setTimeout(() => { controller.abort() }, 60000);
+        const URL = `/api/mmar/pressure/${start}/${end}`;
+        try {
+            const response = await fetch(URL, { method: 'GET', signal: signal });
+            if (response.ok) {
+                const data = await response.json();
+                let keys = Object.keys(data);
+                if (keys.includes("status")) {
+                    if (data["status"] == "found") {
+                        console.log(data["data"]);
+                        return data["data"];
+                    }
+                    if (data["status"] == "failed"
+                    ) {
+                        console.log("getPressureMMAR returned no data");
+                    }
+                }
+            }
+            else {
+                const data = await response.text();
+                console.log(data);
+            }
+        }
+        catch (err) {
+            console.error('getPressureMMAR error: ', err.message);
+        }
+        return []
+    }
 
-    //         console.error('update_Card error:', err.message);
-    //     }
-    //     return []
-    // }
-
-    // 
-    
+    const getAltitudeMMAR = async (start, end) => {
+        // FETCH REQUEST WILL TIMEOUT AFTER 20 SECONDS
+        const controller = new AbortController();
+        const signal = controller.signal;
+        const id = setTimeout(() => { controller.abort() }, 60000);
+        const URL = `/api/mmar/altitude/${start}/${end}`;
+        try {
+            const response = await fetch(URL, { method: 'GET', signal: signal });
+            if (response.ok) {
+                const data = await response.json();
+                let keys = Object.keys(data);
+                if (keys.includes("status")) {
+                    if (data["status"] == "found") {
+                        console.log(data["data"]);
+                        return data["data"];
+                    }
+                    if (data["status"] == "failed"
+                    ) {
+                        console.log("getAltitudeMMAR returned no data");
+                    }
+                }
+            }
+            else {
+                const data = await response.text();
+                console.log(data);
+            }
+        }
+        catch (err) {
+            console.error('getAltitudeMMAR error: ', err.message);
+        }
+        return []
+    }   
 
 
     // ACTIONS
@@ -223,15 +291,15 @@ export const useAppStore =  defineStore('app', ()=>{
  
     return { 
     // EXPORTS	
-    calculate_avg_reserve,
     getAllInRange,
     getUpdateData,
-    getSetCombination,
-    getCheckCombination
-
-
-        
-       }
+    getTemperatureMMAR,
+    getHumidityMMAR,
+    getAltitudeMMAR,
+    getPressureMMAR,
+    getSoilMMAR,
+    getFreqDistro,
+   }
 },{ persist: true  });
 
 

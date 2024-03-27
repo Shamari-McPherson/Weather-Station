@@ -87,7 +87,7 @@ class DB:
             start = int(start)
             end = int(end)
             remotedb 	= self.remoteMongo('mongodb://%s:%s@%s:%s' % (self.username, self.password,self.server,self.port), tls=self.tls)
-            result = list(remotedb.ELET2415.station.aggregate([{'$match': {'timestamp': {'$gte': start, '$lte': end}}}, {'$group': {'_id':0, 'humidity': {'$push': '$$ROOT.humidity'}}}, {'$project': {'max': {'$max': '$humidity'}, 'min': {'$min': '$humidity'}, 'avg': {'$avg': '$humidity'}, 'range': {'$subtract': [{'$max': '$humidity'}, {'$min': '$humidity'}]}}}]))
+            result = list(remotedb.ELET2415.station.aggregate([{'$match': {'timestamp': {'$gte': start, '$lte': end}}}, {'$group': {'_id':0, 'humidity': {'$push': '$$ROOT.humidity'}}}, {'$project': {'max': {'$max': '$humidity'}, 'min': {'$min': '$humidity'} ,'avg': {'$avg': '$humidity'}, 'range': {'$subtract': [{'$max': '$humidity'}, {'$min': '$humidity'}]}}}]))
 
            
         except Exception as e:
@@ -109,7 +109,50 @@ class DB:
             print("temperatureMMAS error ",msg)            
         else:                 
             return result
+        
+    def soilMMAR(self,start, end):
+        '''RETURNS MIN, MAX, AVG AND RANGE FOR TEMPERATURE. THAT FALLS WITHIN THE START AND END DATE RANGE'''
+        try:
+            start = int(start)
+            end = int(end)
+            remotedb 	= self.remoteMongo('mongodb://%s:%s@%s:%s' % (self.username, self.password,self.server,self.port), tls=self.tls)
+            
+            result = list(remotedb.ELET2415.station.aggregate([{'$match': {'timestamp': {'$gte': start, '$lte': end}}},{'$group': {'_id': 0, 'soil_moisture': {'$push': '$$ROOT.soil_moisture'}}},{'$project': {'max': {'$max': '$soil_moisture'}, 'min': {'$min': '$soil_moisture'}, 'avg': {'$avg': '$soil_moisture'}, 'range': {'$subtract': [{'$max': '$soil_moisture'}, {'$min': '$soil_moisture'}]}}}]))
+        except Exception as e:
+            msg = str(e)
+            print("soilMMAS error ",msg)            
+        else:                 
+            return result
+        
+    
+    def pressureMMAR(self,start, end):
+        '''RETURNS MIN, MAX, AVG AND RANGE FOR TEMPERATURE. THAT FALLS WITHIN THE START AND END DATE RANGE'''
+        try:
+            start = int(start)
+            end = int(end)
+            remotedb 	= self.remoteMongo('mongodb://%s:%s@%s:%s' % (self.username, self.password,self.server,self.port), tls=self.tls)
+            
+            result = list(remotedb.ELET2415.station.aggregate([{ '$match': { 'timestamp': { '$gte': start, '$lte': end } } }, { '$group': { '_id': 0, 'pressure': { '$push': '$$ROOT.pressure' } } }, { '$project': { 'max': { '$max': '$pressure' }, 'min': { '$min': '$pressure' }, 'avg': { '$avg': '$pressure' }, 'range': { '$subtract': [ { '$max': '$pressure' }, { '$min': '$pressure' } ] } } } ]))
+        except Exception as e:
+            msg = str(e)
+            print("pressureMMAS error ",msg)            
+        else:                 
+            return result
+        
 
+    def altitudeMMAR(self,start, end):
+        '''RETURNS MIN, MAX, AVG AND RANGE FOR ALTITUDE. THAT FALLS WITHIN THE START AND END DATE RANGE'''
+        try:
+            start = int(start)
+            end = int(end)
+            remotedb 	= self.remoteMongo('mongodb://%s:%s@%s:%s' % (self.username, self.password,self.server,self.port), tls=self.tls)
+            
+            result = list(remotedb.ELET2415.station.aggregate([{ '$match': { 'timestamp': { '$gte': start, '$lte': end } } }, { '$group': { '_id': 0, 'Altitude': { '$push': '$$ROOT.Altitude' } } }, { '$project': { 'max': { '$max': '$Altitude' }, 'min': { '$min': '$Altitude' }, 'avg': { '$avg': '$Altitude' }, 'range': { '$subtract': [ { '$max': '$Altitude' }, { '$min': '$Altitude' } ] } } } ]))
+        except Exception as e:
+            msg = str(e)
+            print("pressureMMAS error ",msg)            
+        else:                 
+            return result
 
     def frequencyDistro(self,variable,start, end):
         '''RETURNS THE FREQUENCY DISTROBUTION FOR A SPECIFIED VARIABLE WITHIN THE START AND END DATE RANGE'''

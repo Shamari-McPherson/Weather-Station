@@ -112,12 +112,12 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_R
 
 static const char* pubtopic      = "620152241";                    // Add your ID number here
 static const char* subtopic[]    = {"620152241_sub","/elet2415"};  // Array of Topics(Strings) to subscribe to
-static const char* mqtt_server   = "dbs.msjrealtms.com";         // Broker IP address or Domain name as a String 
+static const char* mqtt_server   = "www.yanacreations.com";         // Broker IP address or Domain name as a String 
 static uint16_t mqtt_port        = 1883;
 
 // WIFI CREDENTIALS
-const char* ssid       = "Digicel_WiFi_A8eG"; // Add your Wi-Fi ssid MonaConnect Digicel_WiFi_A8eG
-const char* password   = "Nu5TSQ5h"; // Add your Wi-Fi password Nu5TSQ5h
+const char* ssid       = "MonaConnect"; // Add your Wi-Fi ssid MonaConnect Digicel_WiFi_A8eG
+const char* password   = ""; // Add your Wi-Fi password Nu5TSQ5h
 
 
 
@@ -162,9 +162,6 @@ boolean alert = 0;
 int8_t ramp = 1;
 int tesmod = 0;
        
-
-
-
 
 void setup() {
     Serial.begin(115200);  // INIT SERIAL 
@@ -275,8 +272,8 @@ void vUpdate( void * pvParameters )  {
       doc["humidity"] = dHumidity;
       doc["farTemperature"] = f;
       doc["hindex"] = hif;
-      doc["soil moisture"] = mappedValue;
-      doc["BMP temperature"] = bTemp;
+      doc["soil_moisture"] = mappedValue;
+      doc["BMP_temperature"] = bTemp;
       doc["pressure"] = bPress;
       doc["Altitude"] = bAlt;
       doc["value"] = soilValue;
@@ -335,8 +332,6 @@ unsigned long getTimeStamp(void) {
 
     // const char* code= doc["code"];
   }
-
-  
 
 }
 
@@ -431,8 +426,6 @@ void show(double dHumidity, double dTemp_C, double f, double hif, double bTemp, 
             tft.drawBitmap(80, 115, snow, 50, 50, ILI9341_WHITE, GREY);
         }
           
-
-          
           tft.setCursor (10,214);
           tft.setTextSize (2);
           tft.setTextColor (WHITE,GREY);
@@ -447,8 +440,7 @@ void show(double dHumidity, double dTemp_C, double f, double hif, double bTemp, 
           tft.print (int(bAlt)); 
           tft.print ("m");
           tesmod=1;
-
-
+          
         //Used to print the temperature value, Pressure, and Altitude in the serial moniter
         Serial.println(" ");
         Serial.print(F("Temperature = "));

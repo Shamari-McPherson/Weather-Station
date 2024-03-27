@@ -16,21 +16,21 @@ const lightMode = {
   colors: {
     primary : "#335CA8",
     onPrimary : "#FFFFFF",
-    primaryContainer : "#D8E2FF",
+    primaryContainer : "#D1C4E9",
     onPrimaryContainer : "#001A42",
     secondary : "#0060AC",
     onSecondary : "#FFFFFF",
-    secondaryContainer : "#D4E3FF",
+    secondaryContainer : "#00897B",
     onSecondaryContainer : "#001C39",
     tertiary : "#715573",
     onTertiary : "#FFFFFF",
-    tertiaryContainer : "#FCD7FB",
+    tertiaryContainer : "#EEEEEE",
     onTertiaryContainer : "#2A132D",
-    error : "#BA1A1A",
+    error : "#FF1744",
     errorContainer : "#FFDAD6",
     onError : "#FFFFFF",
     onErrorContainer : "#410002",
-    background : "#FFFFFF", // #FEFBFF
+    background : "#EFEBE9", // #FEFBFF
     onBackground : "#1B1B1F",
     surface : "#F5F5F5", // #F0F0F0  , #FFFBFE
     onSurface : "#1B1B1F",

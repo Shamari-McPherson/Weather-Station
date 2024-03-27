@@ -98,7 +98,67 @@ def get_humidity_mmar(start,end):
     return jsonify({"status":"not found","data":[]})
 
 
+@app.route('/api/mmar/soil/<start>/<end>', methods=['GET']) 
+def get_soil_mmar(start,end):
+    start = int(start)
+    end = int(end)   
+    '''RETURNS MIN, MAX, AVG AND RANGE FOR SOIL MOISTURE. THAT FALLS WITHIN THE START AND END DATE RANGE'''
+   
+    if request.method == "GET": 
+        '''Add your code here to complete this route'''
+        try:
+            item = mongo.soilMMAR(start,end)
+            data = list(item)
+            if data:
+                return jsonify({"status":"found","data": data})
+            
+        except Exception as e:
+            print(f"get_soil error: f{str(e)}") 
 
+    # FILE DATA NOT EXIST
+    return jsonify({"status":"not found","data":[]})
+
+
+@app.route('/api/mmar/pressure/<start>/<end>', methods=['GET']) 
+def get_pressure_mmar(start,end):
+    start = int(start)
+    end = int(end)   
+    '''RETURNS MIN, MAX, AVG AND RANGE FOR PRESSURE. THAT FALLS WITHIN THE START AND END DATE RANGE'''
+   
+    if request.method == "GET": 
+        '''Add your code here to complete this route'''
+        try:
+            item = mongo.pressureMMAR(start,end)
+            data = list(item)
+            if data:
+                return jsonify({"status":"found","data": data})
+            
+        except Exception as e:
+            print(f"get_pressure error: f{str(e)}") 
+
+    # FILE DATA NOT EXIST
+    return jsonify({"status":"not found","data":[]})
+
+
+@app.route('/api/mmar/altitude/<start>/<end>', methods=['GET']) 
+def get_altitude_mmar(start,end):
+    start = int(start)
+    end = int(end)   
+    '''RETURNS MIN, MAX, AVG AND RANGE FOR ALTITUDE. THAT FALLS WITHIN THE START AND END DATE RANGE'''
+   
+    if request.method == "GET": 
+        '''Add your code here to complete this route'''
+        try:
+            item = mongo.altitudeMMAR(start,end)
+            data = list(item)
+            if data:
+                return jsonify({"status":"found","data": data})
+            
+        except Exception as e:
+            print(f"get_altitude error: f{str(e)}") 
+
+    # FILE DATA NOT EXIST
+    return jsonify({"status":"not found","data":[]})
 
 
 @app.route('/api/frequency/<variable>/<start>/<end>', methods=['GET']) 
