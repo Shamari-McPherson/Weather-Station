@@ -56,7 +56,7 @@
 #define DHTTYPE DHT22 
 
 
-#define SOIL       33
+#define SOIL       32
 #define TFT_DC    17
 #define TFT_CS    5
 #define TFT_RST   16
